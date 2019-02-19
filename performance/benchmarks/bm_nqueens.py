@@ -1,7 +1,5 @@
 """Simple, brute-force N-Queens solver."""
 
-import perf
-
 __author__ = "collinwinter@google.com (Collin Winter)"
 
 
@@ -55,6 +53,8 @@ def bench_n_queens(queen_count):
 
 
 if __name__ == "__main__":
+    import perf
+
     runner = perf.Runner()
     runner.metadata['description'] = "Simple, brute-force N-Queens solver"
 
