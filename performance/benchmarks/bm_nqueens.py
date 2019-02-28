@@ -4,7 +4,7 @@ __author__ = "collinwinter@google.com (Collin Winter)"
 
 
 # Pure-Python implementation of itertools.permutations().
-def permutations(iterable, r=None):
+def permutations_jit(iterable, r=None):
     """permutations(range(3), 2) --> (0,1) (0,2) (1,0) (1,2) (2,0) (2,1)"""
     pool = tuple(iterable)
     n = len(pool)
@@ -42,7 +42,7 @@ def n_queens(queen_count):
         queen, and the index into the tuple indicates the row.
     """
     cols = range(queen_count)
-    for vec in permutations(cols):
+    for vec in permutations_jit(cols):
         if (queen_count == len(set(vec[i] + i for i in cols))
                         == len(set(vec[i] - i for i in cols))):
             yield vec

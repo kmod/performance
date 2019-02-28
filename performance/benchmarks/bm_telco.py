@@ -27,10 +27,10 @@ from six.moves import xrange
 
 
 def rel_path(*path):
-    return os.path.join(os.path.dirname(__file__), *path)
+    return os.path.join("test/benchmarks/performance/benchmarks", *path)
 
 
-def bench_telco(loops, filename):
+def bench_telco_jit(loops, filename):
     getcontext().rounding = ROUND_DOWN
     rates = list(map(Decimal, ('0.0013', '0.00894')))
     twodig = Decimal('0.01')
@@ -89,4 +89,4 @@ if __name__ == "__main__":
     runner.metadata['description'] = "Telco decimal benchmark"
 
     filename = rel_path("data", "telco-bench.b")
-    runner.bench_time_func('telco', bench_telco, filename)
+    runner.bench_time_func('telco', bench_telco_jit, filename)
