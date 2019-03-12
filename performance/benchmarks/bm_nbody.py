@@ -121,7 +121,7 @@ def offset_momentum(ref, bodies=SYSTEM, px=0.0, py=0.0, pz=0.0):
     v[2] = pz / m
 
 
-def bench_nbody(loops, reference, iterations):
+def bench_nbody_jit(loops, reference, iterations):
     # Set up global state
     offset_momentum(BODIES[reference])
 
@@ -153,5 +153,5 @@ if __name__ == '__main__':
                                        % DEFAULT_REFERENCE)
 
     args = runner.parse_args()
-    runner.bench_time_func('nbody', bench_nbody,
+    runner.bench_time_func('nbody', bench_nbody_jit,
                            args.reference, args.iterations)
