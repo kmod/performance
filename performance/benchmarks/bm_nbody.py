@@ -76,7 +76,7 @@ SYSTEM = list(BODIES.values())
 PAIRS = combinations(SYSTEM)
 
 
-def advance(dt, n, bodies=SYSTEM, pairs=PAIRS):
+def advance_jit(dt, n, bodies=SYSTEM, pairs=PAIRS):
     for i in xrange(n):
         for (([x1, y1, z1], v1, m1),
              ([x2, y2, z2], v2, m2)) in pairs:
@@ -121,7 +121,7 @@ def offset_momentum(ref, bodies=SYSTEM, px=0.0, py=0.0, pz=0.0):
     v[2] = pz / m
 
 
-def bench_nbody_jit(loops, reference, iterations):
+def bench_nbody(loops, reference, iterations):
     # Set up global state
     offset_momentum(BODIES[reference])
 
@@ -130,7 +130,7 @@ def bench_nbody_jit(loops, reference, iterations):
 
     for _ in range_it:
         report_energy()
-        advance(0.01, iterations)
+        advance_jit(0.01, iterations)
         report_energy()
 
     return perf.perf_counter() - t0
@@ -153,5 +153,5 @@ if __name__ == '__main__':
                                        % DEFAULT_REFERENCE)
 
     args = runner.parse_args()
-    runner.bench_time_func('nbody', bench_nbody_jit,
+    runner.bench_time_func('nbody', bench_nbody,
                            args.reference, args.iterations)
