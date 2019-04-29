@@ -59,7 +59,7 @@ class Vector(object):
                       self.z * other.x - self.x * other.z,
                       self.x * other.y - self.y * other.x)
 
-    def normalized(self):
+    def normalized_jit(self):
         return self.scale(1.0 / self.magnitude())
 
     def negated(self):
@@ -150,14 +150,14 @@ class Sphere(object):
             return v - math.sqrt(discriminant)
 
     def normalAt(self, p):
-        return (p - self.centre).normalized()
+        return (p - self.centre).normalized_jit()
 
 
 class Halfspace(object):
 
     def __init__(self, point, normal):
         self.point = point
-        self.normal = normal.normalized()
+        self.normal = normal.normalized_jit()
 
     def __repr__(self):
         return 'Halfspace(%s,%s)' % (repr(self.point), repr(self.normal))
@@ -177,7 +177,7 @@ class Ray(object):
 
     def __init__(self, point, vector):
         self.point = point
-        self.vector = vector.normalized()
+        self.vector = vector.normalized_jit()
 
     def __repr__(self):
         return 'Ray(%s,%s)' % (repr(self.point), repr(self.vector))
@@ -253,8 +253,8 @@ class Scene(object):
         pixelHeight = height / (canvas.height - 1)
 
         eye = Ray(self.position, self.lookingAt - self.position)
-        vpRight = eye.vector.cross(Vector.UP).normalized()
-        vpUp = vpRight.cross(eye.vector).normalized()
+        vpRight = eye.vector.cross(Vector.UP).normalized_jit()
+        vpUp = vpRight.cross(eye.vector).normalized_jit()
 
         for y in xrange(canvas.height):
             for x in xrange(canvas.width):
@@ -296,7 +296,7 @@ class Scene(object):
         return result
 
 
-def addColours(a, scale, b):
+def addColours_jit(a, scale, b):
     return (a[0] + scale * b[0],
             a[1] + scale * b[1],
             a[2] + scale * b[2])
@@ -320,19 +320,19 @@ class SimpleSurface(object):
         if self.specularCoefficient > 0:
             reflectedRay = Ray(p, ray.vector.reflectThrough(normal))
             reflectedColour = scene.rayColour(reflectedRay)
-            c = addColours(c, self.specularCoefficient, reflectedColour)
+            c = addColours_jit(c, self.specularCoefficient, reflectedColour)
 
         if self.lambertCoefficient > 0:
             lambertAmount = 0
             for lightPoint in scene.visibleLights(p):
-                contribution = (lightPoint - p).normalized().dot(normal)
+                contribution = (lightPoint - p).normalized_jit().dot(normal)
                 if contribution > 0:
                     lambertAmount = lambertAmount + contribution
             lambertAmount = min(1, lambertAmount)
-            c = addColours(c, self.lambertCoefficient * lambertAmount, b)
+            c = addColours_jit(c, self.lambertCoefficient * lambertAmount, b)
 
         if self.ambientCoefficient > 0:
-            c = addColours(c, self.ambientCoefficient, b)
+            c = addColours_jit(c, self.ambientCoefficient, b)
 
         return c
 
