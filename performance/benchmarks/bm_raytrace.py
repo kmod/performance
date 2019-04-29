@@ -34,7 +34,7 @@ class Vector(object):
         return 'Vector(%s,%s,%s)' % (self.x, self.y, self.z)
 
     def magnitude(self):
-        return math.sqrt(self.dot(self))
+        return math.sqrt(self.dot_jit(self))
 
     def __add__(self, other):
         if other.isPoint():
@@ -49,7 +49,7 @@ class Vector(object):
     def scale(self, factor):
         return Vector(factor * self.x, factor * self.y, factor * self.z)
 
-    def dot(self, other):
+    def dot_jit(self, other):
         other.mustBeVector()
         return (self.x * other.x) + (self.y * other.y) + (self.z * other.z)
 
@@ -81,7 +81,7 @@ class Vector(object):
         raise 'Vectors are not points!'
 
     def reflectThrough(self, normal):
-        d = normal.scale(self.dot(normal))
+        d = normal.scale(self.dot_jit(normal))
         return self - d.scale(2)
 
 
@@ -142,8 +142,8 @@ class Sphere(object):
 
     def intersectionTime(self, ray):
         cp = self.centre - ray.point
-        v = cp.dot(ray.vector)
-        discriminant = (self.radius * self.radius) - (cp.dot(cp) - v * v)
+        v = cp.dot_jit(ray.vector)
+        discriminant = (self.radius * self.radius) - (cp.dot_jit(cp) - v * v)
         if discriminant < 0:
             return None
         else:
@@ -163,7 +163,7 @@ class Halfspace(object):
         return 'Halfspace(%s,%s)' % (repr(self.point), repr(self.normal))
 
     def intersectionTime(self, ray):
-        v = ray.vector.dot(self.normal)
+        v = ray.vector.dot_jit(self.normal)
         if v:
             return 1 / -v
         else:
@@ -325,7 +325,7 @@ class SimpleSurface(object):
         if self.lambertCoefficient > 0:
             lambertAmount = 0
             for lightPoint in scene.visibleLights(p):
-                contribution = (lightPoint - p).normalized_jit().dot(normal)
+                contribution = (lightPoint - p).normalized_jit().dot_jit(normal)
                 if contribution > 0:
                     lambertAmount = lambertAmount + contribution
             lambertAmount = min(1, lambertAmount)
