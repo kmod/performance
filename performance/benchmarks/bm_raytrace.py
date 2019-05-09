@@ -140,7 +140,7 @@ class Sphere(object):
     def __repr__(self):
         return 'Sphere(%s,%s)' % (repr(self.centre), self.radius)
 
-    def intersectionTime(self, ray):
+    def intersectionTime_jit(self, ray):
         cp = self.centre - ray.point
         v = cp.dot_jit(ray.vector)
         discriminant = (self.radius * self.radius) - (cp.dot_jit(cp) - v * v)
@@ -162,7 +162,7 @@ class Halfspace(object):
     def __repr__(self):
         return 'Halfspace(%s,%s)' % (repr(self.point), repr(self.normal))
 
-    def intersectionTime(self, ray):
+    def intersectionTime_jit(self, ray):
         v = ray.vector.dot_jit(self.normal)
         if v:
             return 1 / -v
@@ -269,7 +269,7 @@ class Scene(object):
             return (0, 0, 0)
         try:
             self.recursionDepth = self.recursionDepth + 1
-            intersections = [(o, o.intersectionTime(ray), s)
+            intersections = [(o, o.intersectionTime_jit(ray), s)
                              for (o, s) in self.objects]
             i = firstIntersection(intersections)
             if i is None:
@@ -283,7 +283,7 @@ class Scene(object):
 
     def _lightIsVisible(self, l, p):
         for (o, s) in self.objects:
-            t = o.intersectionTime(Ray(p, l - p))
+            t = o.intersectionTime_jit(Ray(p, l - p))
             if t is not None and t > EPSILON:
                 return False
         return True
