@@ -1,6 +1,109 @@
 Changelog
 =========
 
+Version 1.0.1 (2020-03-26)
+--------------------------
+
+* Drop usage of the six module since Python 2 is no longer supported.
+  Remove Python 2 specific code.
+* Update dependencies:
+
+  * django: 3.0 => 3.0.4
+  * dulwich: 0.19.14 => 0.19.15
+  * mako: 1.1.0 = > 1.1.2
+  * mercurial: 5.1.1 => 5.3.1
+  * psutil: 5.6.7 => 5.7.0
+  * pyperf: 1.7.0 => 2.0.0
+  * sqlalchemy: 1.3.12 => 1.3.15
+  * sympy: 1.5 => 1.5.1
+  * tornado: 6.0.3 => 6.0.4
+
+* Remove six, html5lib and mercurial requirements.
+* pip-tools (pip-compile) is now used to update dependencies
+
+Version 1.0.0 (2019-12-17)
+--------------------------
+
+* Enable pyflate benchmarks on Python 3.
+* Remove ``spambayes`` benchmark: it is not compatible with Python 3.
+* Remove ``2n3``:benchmark group.
+* Drop Python 2.7 support: old Django and Tornado versions are
+  not compatible with incoming Python 3.9.
+* Disable html5lib benchmark temporarily, since it's no longer compatible
+  with Python 3.9.
+* Update requirements:
+
+  * Django: 1.11.22 => 3.0
+  * Mako: 1.0.14 => 1.1.0
+  * SQLAlchemy: 1.3.6 => 1.3.12
+  * certifi: 2019.6.16 => 2019.11.28
+  * docutils: 0.15.1 => 0.15.2
+  * dulwich: 0.19.11 => 0.19.14
+  * mercurial: 5.0.2 => 5.1.1
+  * psutil: 5.6. => 5.6.7
+  * pyperf: 1.6.1 => 1.7.0
+  * six: 1.12. =>  1.13.0
+  * sympy: 1.4 => 1.5
+
+Version 0.9.1 (2019-07-29)
+--------------------------
+
+* Enable hg_startup on Python 3
+* Fix compatibility with Python 3.8 beta 2
+* Update requirements:
+
+  * certifi: 2019.3.9 => 2019.6.16
+  * Chameleon: 3.6.1 => 3.6.2
+  * Django: 1.11.20 => 1.11.22
+  * docutils: 0.14 => 0.15.1.post1
+  * Mako: 1.0.10 => 1.0.14
+  * mercurial: 5.0 => 5.0.2
+  * pathlib2: 2.3.3 => 2.3.4
+  * psutil: 5.6.2 => 5.6.3
+  * SQLAlchemy: 1.3.4 => 1.3.6
+
+Version 0.9.0 (2019-05-29)
+--------------------------
+
+* Project renamed from "performance" to "pyperformance"
+* Upgrade pyperf from version 1.6.0 to 1.6.1. The project has been renamed from
+  "perf" to "pyperf". Update imports.
+* Issue #54: Update Genshi to 0.7.3. It is now compatible with Python 3.8.
+* Update requirements:
+
+  * Mako: 1.0.9= > 1.0.10
+  * SQLAlchemy: 1.3.3 => 1.3.4
+
+Version 0.8.0 (2019-05-10)
+--------------------------
+
+* compile command: Add "pkg_only" option to benchmark.conf.
+  Add support for native libraries that are installed but not on path.
+  Patch by Robert Grimm.
+* Update Travis configuration: use trusty image, use pip cache.
+  Patch by Inada Naoki.
+* Upgrade tornado to 5.1.1.
+  Patch by Inada Naoki.
+* Fix compile command on Mac OS: no program extension. Patch by Anthony Shaw.
+* Update requirements:
+
+  * Chameleon: 3.4 => 3.6.1
+  * Django: 1.11.16 => 1.11.20
+  * Genshi: 0.7.1 => 0.7.2
+  * Mako: 1.0.7 => 1.0.9
+  * MarkupSafe: 1.0 => 1.1.1
+  * SQLAlchemy: 1.2.12 => 1.3.3
+  * certifi: 2018.10.15 => 2019.3.9
+  * dulwich: 0.19.6 => 0.19.11
+  * mercurial: 4.7.2 => 5.0
+  * mpmath: 1.0.0 => 1.1.0
+  * pathlib2: 2.3.2 => 2.3.3
+  * perf: 1.5.1 => 1.6.0
+  * psutil: 5.4.7 => 5.6.2
+  * six: 1.11.0 => 1.12.0
+  * sympy: 1.3 => 1.4
+  * tornado: 4.5.3 => 5.1.1
+
 Version 0.7.0 (2018-10-16)
 --------------------------
 

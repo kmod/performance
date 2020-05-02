@@ -28,7 +28,7 @@ git_remote = remotes/origin
 # Create files into bench_dir:
 # - bench_dir/bench-xxx.log
 # - bench_dir/prefix/: where Python is installed
-# - bench_dir/venv/: Virtual environment used by performance
+# - bench_dir/venv/: Virtual environment used by pyperformance
 bench_dir = ~/bench_tmpdir
 
 # Link Time Optimization (LTO)?
@@ -36,6 +36,19 @@ lto = True
 
 # Profiled Guided Optimization (PGO)?
 pgo = True
+
+# The space-separated list of libraries that are package-only,
+# i.e., locally installed but not on header and library paths.
+# For each such library, determine the install path and add an
+# appropriate subpath to CFLAGS and LDFLAGS declarations passed
+# to configure. As an exception, the prefix for openssl, if that
+# library is present here, is passed via the --with-openssl
+# option. Currently, this only works with Homebrew on macOS.
+# If running on macOS with Homebrew, you probably want to use:
+#     pkg_only = openssl readline sqlite3 xz zlib
+# The version of zlib shipping with macOS probably works as well,
+# as long as Apple's SDK headers are installed.
+pkg_only =
 
 # Install Python? If false, run Python from the build directory
 #
@@ -48,13 +61,13 @@ install = True
 
 
 [run_benchmark]
-# Run "sudo python3 -m perf system tune" before running benchmarks?
+# Run "sudo python3 -m pyperf system tune" before running benchmarks?
 system_tune = True
 
-# --benchmarks option for 'performance run'
+# --benchmarks option for 'pyperformance run'
 benchmarks =
 
-# --affinity option for 'perf system tune' and 'performance run'
+# --affinity option for 'pyperf system tune' and 'pyperformance run'
 affinity =
 
 # Upload generated JSON file?

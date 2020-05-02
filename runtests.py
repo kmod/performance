@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-from __future__ import division, with_statement, print_function, absolute_import
-
 import os.path
 import shutil
 import subprocess
@@ -43,15 +41,18 @@ def run_tests(venv):
 
     run_bench(python, script, 'venv', 'create')
 
-    egg_info = "performance.egg-info"
+    egg_info = "pyperformance.egg-info"
     print("Remove directory %s" % egg_info)
-    shutil.rmtree(egg_info)
+    try:
+        shutil.rmtree(egg_info)
+    except FileNotFoundError:
+        pass
 
     run_bench(python, script, 'venv')
 
     for filename in (
-        os.path.join('performance', 'tests', 'data', 'py2.json'),
-        os.path.join('performance', 'tests', 'data', 'mem1.json'),
+        os.path.join('pyperformance', 'tests', 'data', 'py36.json'),
+        os.path.join('pyperformance', 'tests', 'data', 'mem1.json'),
     ):
         run_cmd((python, script, 'show', filename))
 
@@ -68,7 +69,7 @@ def run_tests(venv):
               '-o', json)
 
     # Display slowest benchmarks
-    run_cmd((venv_python, '-m', 'perf', 'slowest', json))
+    run_cmd((venv_python, '-m', 'pyperf', 'slowest', json))
 
     run_bench(python, script, 'venv', 'remove')
 
@@ -76,7 +77,7 @@ def run_tests(venv):
 def main():
     # Unit tests
     cmd = [sys.executable,
-           os.path.join('performance', 'tests', 'test_compare.py')]
+           os.path.join('pyperformance', 'tests', 'test_compare.py')]
     run_cmd(cmd)
 
     # Functional tests
