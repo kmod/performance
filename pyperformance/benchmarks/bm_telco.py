@@ -24,7 +24,7 @@ import pyperf
 
 
 def rel_path(*path):
-    return os.path.join("test/benchmarks/performance/benchmarks", *path)
+    return os.path.join("test/benchmarks/pyperformance/benchmarks", *path)
 
 
 def bench_telco_jit(loops, filename):
